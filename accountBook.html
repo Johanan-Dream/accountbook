@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" type="text/css" href = "calendarstyle.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calendar</title>    
+    <script src="./classes/Cell.js"></script>
+    <script src="../lib/util.js"></script>
+    <script src="./classes/Pop.js"></script>
+    <script>    
+        let container;
+        let content;
+        let cellArray=[];
+        let dayTitle;
+        let current_yy;
+        let current_mm;
+        let current_lastDate;
+        //let current_dd;
+        let targetArray=[];
+        let target;
+        let targetInputBox;
+        let pop;
+        let flag=false;
+        let moneyInfoArray=[];
+        let nameArray=[
+        ["급여", "상여금", "보너스", "피복비"],
+        ["보험료", "통신비", "구독료", "교통비", "공과금", "카드대금", "월세", "대출이자", "식비", "기타"],
+        ["정기적금", "자유적금", "펀드", "주식", "배당금", ],
+        ];
+        let optionName=["카테고리를 선택해주세요", "소득", "지출", "저축"];
+        let currentCell;  //내가 현재 선택한 그 쎌 
+
+        function createContainer(){
+            container=document.createElement("div");
+            container.style.position="absolute";
+            container.style.left=0+"px";
+            container.style.top=0+"px";
+            container.style.width=714+"px";
+            container.style.height=612+"px";
+
+            content.appendChild(container);
+        }
+        function createCell(){
+            let num=0;
+            for(let i=0;i<6;i++){
+                let arr=[]
+                for(let a=0;a<7;a++){
+                    num++;
+                    let cell=new Cell(container, a*170, i*110, 170, 120, num, "", 10);
+                    arr.push(cell);
+                }
+                cellArray.push(arr);
+            }
+        }
+        function getStartDayOfWeek(year, month){
+            let d= new Date(year, month, 1);
+            return d.getDay();
+        }
+        function getTotalDate(year, month){
+            let d=new Date(year, month+1);
+            d.setDate(0);
+            current_lastDate = d.getDate()
+            return current_lastDate;
+        }
+
+        function printDate(year, month){
+            let d=new Date();
+            
+            let startDay=getStartDayOfWeek(year, month);
+            let totalDate=getTotalDate(year, month);
+
+            let n=0; 
+            let num=1;
+            for(let i=0;i<6;i++){
+                for(let a=0;a<7;a++){
+                    if(n>=startDay && num<=totalDate){
+                        cellArray[i][a].numDiv.innerText=num;  
+                        cellArray[i][a].num = num;
+                        num++
+                    }else{
+                        cellArray[i][a].numDiv.innerText="";
+                        cellArray[i][a].msgDiv.innerText="";
+                    }
+                    n++;
+                }
+            }
+        }
+
+        //팝업창 만들기
+        function createPop(){
+            //constructor(container, x, y, width, height, color){
+            pop=new Pop(content, 40, 50, 400, 500, "white");
+        }
+
+        function showHidePop(showOption, target){
+            let result=(showOption)? "block": "none";
+            target.style.display=result;
+        }
+
+        function removeOptions(){
+            let len=pop.selectArray[2].options.length;
+            for(let i=0;i<len;i++){
+                pop.selectArray[2].remove(0); 
+            }
+        }
+       function getSubList(){
+            removeOptions(); 
+            let topIndex=parseInt(pop.selectArray[1].value);
+            console.log(topIndex);
+
+            let selectedArray=nameArray[topIndex];
+
+            let default_op=document.createElement("option");
+            default_op.text="카테고리를 선택해주세요";
+            pop.selectArray[2].add(default_op);
+
+            if(selectedArray !=undefined){
+                for(let i=0;i<selectedArray.length;i++){
+                    let op=document.createElement("option");
+                    op.text=selectedArray[i];
+                    pop.selectArray[2].add(op);
+                }
+            }
+        }
+
+        function printTitle(){
+            dayTitle.innerText=current_yy+"년  "+getBaseString(current_mm+1)+"월";
+        }
+
+        function prev(){
+            let d=new Date(current_yy, current_mm-1);
+            current_yy=d.getFullYear();
+            current_mm=d.getMonth();
+
+            printTitle();
+            printDate(current_yy, current_mm);
+        }
+        function next(){
+            let d=new Date(current_yy, current_mm+1);
+            current_yy=d.getFullYear();
+            current_mm=d.getMonth();
+            printTitle();
+            printDate(current_yy, current_mm);
+        }
+
+        function deleteBoard_a(seq){
+		Swal.fire({
+		  title: '등록실패',
+		  text: "내용을 입력해주세요",
+		  icon: 'error',
+		  confirmButtonColor: 'rgb(160, 195, 145)',
+		  confirmButtonText: '확인',
+		})
+        }
+
+        function deleteBoard_b(seq){
+		Swal.fire({
+		  title: '등록제한',
+		  text: "더 많은 서비스를 이용하시려면 회원가입 부탁드립니다.",
+		  icon: 'info',
+		  confirmButtonColor: 'rgb(160, 195, 145)',
+		  confirmButtonText: '확인',
+		})
+        }
+
+        function deleteBoard_c(seq){
+        Swal.fire({
+        title: '내용 삭제하시겠습니까?',
+        text: "삭제하신 내용은 복구시킬 수 없습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'rgb(160, 195, 145)',
+        cancelButtonColor: 'rgb(221, 34, 57)',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.value) {
+            let targetList=document.getElementById("targetList");
+                let li = targetList.getElementsByTagName('li');
+                if(li.length > 0){
+                    li[0].remove();
+                }
+            }
+          })
+       }
+        
+        function input(){
+            target=document.getElementById("targetInputBox");
+            if(target.value==""){
+                deleteBoard_a();
+                targetInputBox.focus();
+            }else{
+                if(targetArray.length<4){
+                targetArray.push(target.value);
+                printTarget();
+                }else{
+                    deleteBoard_b();
+                }      
+            }
+        }
+   
+        function del(){
+            if(deleteBoard_c()){
+                let targetList=document.getElementById("targetList");
+                let li = targetList.getElementsByTagName('li');
+                if(li.length > 0){
+                    li[0].remove();
+                }
+            }
+        }
+        function printTarget(){
+            let targetList=document.getElementById("targetList");
+            let li = document.createElement('li');
+            li.innerHTML ="<a href='javascript:del();'>"+targetArray[targetArray.length-1]+"</a>";
+            targetList.appendChild(li);
+            let target=document.getElementById("targetInputBox").value=null;
+        }
+
+        function init(){
+            content=document.getElementById("content");
+            dayTitle=document.getElementById("day-title");
+            targetInputBox=document.getElementById("targetInputBox");
+            targetInputBox.focus();
+            
+            createContainer();
+            createCell();
+            
+            let d=new Date();
+            current_yy=d.getFullYear();
+            current_mm=d.getMonth();
+            
+            
+            printTitle();
+            printDate(current_yy, current_mm);
+            
+            createPop();
+
+            document.getElementById("bt-prev").addEventListener("click", function(){
+                prev();
+            })
+            document.getElementById("bt-next").addEventListener("click", function(){
+                next();
+            })
+        }
+        window.addEventListener("load", function(){
+            init();
+
+
+        })
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="memo_area">
+            <div id="greeting">
+                <span class="spanDesign">반가워요!</span>
+                <div id="namePrintBox"></div>
+            </div>
+            <div id="goal">
+                <span class="spanDesign">이 달의 목표</span>
+                <input type="text" placeholder="목표를 입력해주세요" id="targetInputBox">
+                <button onClick="input()" class="bt_plus">등록 </button>
+                <ul id="targetList">
+                </ul>
+                <div id="targetPrint"></div>
+            </div>
+            
+        </div>
+        <div id="calendar_area">
+            <div id="calendar_wrapper">
+                <div id="control">
+                    <button id="bt-prev" class="bt_plus2">◀</button>
+                    <span id="day-title"></span>
+                    <button id="bt-next" class="bt_plus2">▶</button>
+                </div>
+                <div id="day-area">
+                        <div class="daySun">SUN</div>
+                        <div class="day">MON</div>
+                        <div class="day">TUE</div>
+                        <div class="day">WED</div>
+                        <div class="day">THR</div>
+                        <div class="day">FRI</div>
+                        <div class="dayS">SAT</div>
+                </div>
+                <div id="content">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

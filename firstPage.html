@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+@font-face {
+			font-family: 'rose';
+			src: url('./font/rose.ttf')
+			format('truetype'); 
+		}
+* {
+    font-family: 'rose', sans-serif;
+}
+body{
+    margin: 0px;
+}
+#wrapper{
+    height: 936px;
+    background-image: url(../images/green.png);
+    background-size:cover;
+}
+.div{
+    font-size:100px; 
+    color: rgb(99, 128, 104);
+    font-weight: bolder; 
+    padding-top: 400px;
+    margin-left: 560px;
+    cursor: url(../images/pointer.png), auto;
+}
+.div:hover {
+color: rgb(194, 222, 194);
+cursor: pointer;
+}
+</style>
+<script>
+    let info;
+    function printlog(){
+        let txt="";
+        txt+="너비는"+screen.width+"\n";
+        txt+="높이는"+screen.height+"\n";
+
+        info.innerText=txt;
+    }
+    function init(){
+        info=document.getElementById("info")
+    }
+</script>
+<body onload="init()">
+    <div id="wrapper">
+        <div class="div" onClick="location.href='./accountBook.html';">"Hi, Nice to meet you!"</div>
+        <div id="info"></div>
+    </div>
+</body>
+</html>

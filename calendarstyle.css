@@ -1,0 +1,183 @@
+@font-face {
+    font-family: 'rose';
+    src: url('./font/rose.ttf')
+    format('truetype'); 
+}
+* {
+font-family: 'rose', sans-serif;
+}
+body{
+    margin: 0px;
+    overflow: hidden;
+}
+#wrapper{
+    width: 1920px;;;
+    height: 930px;
+    background-image: url(../images/green.png);
+    overflow: hidden;
+    margin: auto;
+    float: left;
+}
+#memo_area{
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+#greeting{
+    width: 95%;
+    height: 100px;
+    background-color: white;
+    border: 1.5px solid #dcdcdc;
+    box-sizing: border-box;
+    font-size: 60px;
+    color: rgb(160, 195, 145);
+    font-weight: bolder;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding-top: 10px;
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, .1));
+}
+#goal{
+    width: 95%;
+    height: 340px;
+    background-color: white;
+    border: 1.5px solid #dcdcdc;
+    box-sizing: border-box;
+    font-size: 40px;
+    color: rgb(160, 195, 145);
+    font-weight: bolder;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-left: 20px;
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, .1));
+}
+#targetInputBox{
+    width: 270px;
+    height: 35px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, .1));
+    border: 1.5px solid #dcdcdc;
+    font-size: 25px;
+    padding-left: 10px;
+}
+.bt_plus{
+    border: 1.5px solid black;
+    background-color: #dcdcdc;
+    width: 55px;
+    height: 35px;
+    font-size: 25px;
+    border-radius: 10px;
+}
+.bt_plus2{
+    background-color:  white;
+    border: white;
+    width: 45px;
+    height: 35px;
+    font-size: 45px;
+    color: rgb(160, 195, 145);
+}
+#targetPrint{
+    width: 95%;
+    height: 200px;
+    position: absolute;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+#summary{
+    width: 95%;
+    height: 420px;/*값 확인*/
+    border: 1.5px solid #dcdcdc;
+    background-color: white;
+    box-sizing: border-box;
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, .1));
+    font-size: 40px;
+    color: rgb(160, 195, 145);
+    font-weight: bolder;
+    padding-left: 20px;
+
+}
+#calendar_area{
+    width: 67%;
+    height: 892px;
+    background-color: white;
+    float: left;
+    border: 1.5px solid #dcdcdc;
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, .1));
+}
+#calendar_wrapper{
+    width: 1190px;
+    height: 750px;
+    background-color: white;
+    margin: auto;
+    padding-top: 45px;
+}
+#control{
+    width: 1190px;
+    height: 80px;
+    background-color: white;
+    font-size: 55px;
+    text-align: center;
+    font-weight: bolder;
+    color:rgb(160, 195, 145);
+}
+#day-area{
+    width: 1190px;
+    height: 60px;
+}
+#content{
+    width: 1190px;
+    height: 600px;
+    position: relative;
+    border-radius: 10px;
+}
+.day{
+    width: 170px;
+    height:60px;
+    font-weight: 900;
+    font-size: 30px;
+    background: rgb(160, 195, 145);
+    color: white;
+    text-align: right;
+    float: left;
+    border: 1px #dcdcdc solid;
+    box-sizing: border-box;
+}
+.daySun{
+    width: 170px;
+    height:60px;
+    color: rgb(221, 34, 57);
+    font-weight: 900;
+    font-size: 30px;
+    background: rgb(160, 195, 145);
+    text-align: right;
+    float: left;
+    border: 1px #dcdcdc solid;
+    box-sizing: border-box;
+}
+.dayS{
+    width: 170px;
+    height:60px;
+    color: rgb(43, 34, 221);
+    font-weight: 900;
+    font-size: 30px;
+    background: rgb(160, 195, 145);
+    text-align: right;
+    float: left;
+    border: 1px #dcdcdc solid;
+    box-sizing: border-box;
+}
+.spanDesign{
+    padding-left: 15px;
+}
+a{
+    text-decoration-line:none;
+    color: rgb(160, 195, 145);
+}
